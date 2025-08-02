@@ -9,6 +9,7 @@ import { eventSchema } from "../../Schema/EventFormSchema";
 import Textarea from "../ui/TextArea";
 import { SelectField } from "../ui/SelectField";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEventContext } from "../../Context/EventContext";
 
 type FormValues = {
   title: string;
@@ -21,6 +22,7 @@ type FormValues = {
 const Form: React.FC = () => {
   const { id } = useParams();
   const { state } = useLocation();
+  const { addEvent, events, updateEvent } = useEventContext();
 
   const navigate = useNavigate();
   const {
@@ -43,24 +45,20 @@ const Form: React.FC = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    const existingEvents = JSON.parse(localStorage.getItem("events") || "[]");
-
     if (!id) {
       const newEvent = {
         ...data,
         id: crypto.randomUUID(), // or Date.now().toString()
       };
 
-      const updatedEvents = [...existingEvents, newEvent];
-      localStorage.setItem("events", JSON.stringify(updatedEvents));
-      reset();
+      addEvent(newEvent);
       navigate("/");
     } else {
-      const updatedEvents = existingEvents.map((event: any) =>
-        event.id === id ? { ...event, ...data, id } : event
-      );
-
-      localStorage.setItem("events", JSON.stringify(updatedEvents));
+      const updatedEvent = {
+        ...data,
+        id: id, // or Date.now().toString()
+      };
+      updateEvent(updatedEvent);
       navigate("/");
     }
   };
