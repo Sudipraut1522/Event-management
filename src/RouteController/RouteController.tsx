@@ -8,7 +8,7 @@ const RouteController = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<BaseLayout />}>
-            <Route path="/add-event" element={<AddEvent />} />
+            <Route path="/add-event/:id?" element={<AddEvent />} />
           </Route>
         </Routes>
       </BrowserRouter>

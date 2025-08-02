@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { Calendar, Plus } from "lucide-react";
-import ReactModal from "./ui/Modal";
-import Form from "./form/Form";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
-  const [openModal, setOpenModal] = useState(false);
-
-  const handelEventForm = () => {
-    setOpenModal(!openModal);
-  };
-
   return (
     <div className="w-full sticky top-0 bg-gray-50">
       <nav className="flex justify-between py-4 md:px-12 items-center">
@@ -28,10 +20,7 @@ const Navbar = () => {
         </div>
         <div className="flex gap-2 items-center cursor-pointer ">
           <NavLink to={"add-event"}>
-            <p
-              className="bg-purple-500 p-2 rounded-md flex items-center gap-2 px-3"
-              // onClick={() => handelEventForm()}
-            >
+            <p className="bg-purple-500 p-2 rounded-md flex items-center gap-2 px-3">
               <Plus size={20} className="text-white" />
               <p className="font-semibold text-white">Add Event</p>
             </p>

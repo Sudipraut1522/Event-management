@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { eventSchema } from "../../Schema/EventFormSchema";
 import Textarea from "../ui/TextArea";
 import { SelectField } from "../ui/SelectField";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 type FormValues = {
   title: string;
@@ -18,6 +19,10 @@ type FormValues = {
 };
 
 const Form: React.FC = () => {
+  const { id } = useParams();
+  const { state } = useLocation();
+
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -28,28 +33,41 @@ const Form: React.FC = () => {
     mode: "onChange",
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      date: "",
-      description: "",
-      location: "",
-      organizer: "",
-      title: "",
-      category: "",
+      date: id ? state.event?.date : "",
+      description: id ? state.event?.description : "",
+      location: id ? state.event?.location : "",
+      organizer: id ? state.event?.organizer : "",
+      title: id ? state.event?.title : "",
+      category: id ? state.event?.category : "",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    const existingEvents = JSON.parse(localStorage?.getItem("events") || "[]");
-    const newEvent = {
-      ...data,
-      id: new Date(),
-    };
-    const updatedEvents = [...existingEvents, newEvent];
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
-    reset();
+    const existingEvents = JSON.parse(localStorage.getItem("events") || "[]");
+
+    if (!id) {
+      const newEvent = {
+        ...data,
+        id: crypto.randomUUID(), // or Date.now().toString()
+      };
+
+      const updatedEvents = [...existingEvents, newEvent];
+      localStorage.setItem("events", JSON.stringify(updatedEvents));
+      reset();
+      navigate("/");
+    } else {
+      const updatedEvents = existingEvents.map((event: any) =>
+        event.id === id ? { ...event, ...data, id } : event
+      );
+
+      localStorage.setItem("events", JSON.stringify(updatedEvents));
+      navigate("/");
+    }
   };
 
   const handleCancelEvent = () => {
     reset();
+    navigate("/");
   };
   const options = [
     { label: "Apple", value: "apple" },
@@ -124,7 +142,7 @@ const Form: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-6 mb-6">
               <Button
-                label="Add Event"
+                label={`${id ? "Update" : "Add"} Event`}
                 className="bg-purple-500"
                 type="submit"
               />

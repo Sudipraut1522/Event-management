@@ -1,5 +1,6 @@
 import React from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 type Event = {
   id: number;
@@ -11,13 +12,13 @@ type Event = {
 
 interface EventListProps {
   events: Event[];
-  onEdit: (event: Event) => void;
+  onEdit?: (event: Event) => void;
   onDelete: (id: number) => void;
 }
 
-const EventList: React.FC<EventListProps> = ({ events, onEdit, onDelete }) => {
+const EventList: React.FC<EventListProps> = ({ events, onDelete }) => {
   return (
-    <div className="mt-6 space-y-4">
+    <div className="mt-6 space-y-4 w-full flex justify-center">
       {events?.length === 0 ? (
         <p className="text-gray-500">No events available.</p>
       ) : (
@@ -39,14 +40,12 @@ const EventList: React.FC<EventListProps> = ({ events, onEdit, onDelete }) => {
                 </span>
               )}
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => onEdit(event)}
-                className="p-2 rounded hover:bg-gray-100"
-                title="Edit"
-              >
-                <Pencil size={18} className="text-blue-600" />
-              </button>
+            <div className="flex gap-2 ">
+              <NavLink to={`add-event/${event?.id}`} state={{ event: event }}>
+                <button className="p-2 rounded hover:bg-gray-100" title="Edit">
+                  <Pencil size={18} className="text-blue-600" />
+                </button>
+              </NavLink>
               <button
                 onClick={() => onDelete(event?.id)}
                 className="p-2 rounded hover:bg-gray-100"
