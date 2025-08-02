@@ -33,6 +33,7 @@ const Form: React.FC = () => {
       location: "",
       organizer: "",
       title: "",
+      category: "",
     },
   });
 
@@ -42,7 +43,6 @@ const Form: React.FC = () => {
     const existingEvents = JSON.parse(localStorage?.getItem("events") || "[]");
     const newEvent = {
       ...data,
-      id: Date.now(),
     };
     const updatedEvents = [...existingEvents, newEvent];
     localStorage.setItem("events", JSON.stringify(updatedEvents));
@@ -59,7 +59,7 @@ const Form: React.FC = () => {
   ];
   return (
     <div className="flex justify-center flex-col gap-2 items-center mt-6">
-      <div className="min-w-[33vw] bg-white shadow-xl py-4">
+      <div className="min-w-[33vw] bg-white shadow-xl rounded-2xl ">
         <div className="flex justify-center gap-2 bg-purple-500 py-4 rounded-md">
           <Calendar className="text-white" />
           <h1 className="text-lg font-semibold text-white">Create New Event</h1>
@@ -99,18 +99,17 @@ const Form: React.FC = () => {
                 error={errors?.date?.message}
               />
               <Controller
-                name="fruit"
+                name="category"
                 control={control}
-                rules={{ required: "Fruit is required" }}
+                rules={{ required: "Category is required" }}
                 render={({ field, fieldState }) => (
                   <SelectField
-                    label="Choose a fruit"
+                    label="Choose a Category"
                     name={field?.name}
                     value={field?.value}
                     onChange={field?.onChange}
                     onBlur={field?.onBlur}
                     options={options}
-                    error={fieldState.error?.message}
                   />
                 )}
               />
@@ -124,13 +123,13 @@ const Form: React.FC = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mb-2">
+            <div className="grid grid-cols-2 gap-6 mb-6">
               <Button
-                label="Create Event"
+                label="Add Event"
                 className="bg-purple-500"
                 type="submit"
               />
-              <Button label="Cancel Event" onClick={handleCancelEvent} />
+              <Button label="Clear" onClick={handleCancelEvent} />
             </div>
           </div>
         </form>

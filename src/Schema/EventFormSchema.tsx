@@ -6,4 +6,5 @@ export const eventSchema = z.object({
   location: z.string().min(1, "Location is required"),
   date: z.string().min(1, "Date is required"),
   organizer: z.string().min(1, "Organizer is required"),
+  category: z.string().min(1, "Category is required"),
 });
