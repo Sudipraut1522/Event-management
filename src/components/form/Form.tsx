@@ -20,7 +20,7 @@ type FormValues = {
 };
 
 const Form: React.FC = () => {
-  const { id } = useParams();
+  const { id: editId } = useParams();
   const { state } = useLocation();
   const { addEvent, events, updateEvent } = useEventContext();
 
@@ -35,20 +35,20 @@ const Form: React.FC = () => {
     mode: "onChange",
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      date: id ? state.event?.date : "",
-      description: id ? state.event?.description : "",
-      location: id ? state.event?.location : "",
-      organizer: id ? state.event?.organizer : "",
-      title: id ? state.event?.title : "",
-      category: id ? state.event?.category : "",
+      date: editId ? state.event?.date : "",
+      description: editId ? state.event?.description : "",
+      location: editId ? state.event?.location : "",
+      organizer: editId ? state.event?.organizer : "",
+      title: editId ? state.event?.title : "",
+      category: editId ? state.event?.category : "",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    if (!id) {
+    if (!editId) {
       const newEvent = {
         ...data,
-        id: crypto.randomUUID(), // or Date.now().toString()
+        id: Date.now(), // use a number for id
       };
 
       addEvent(newEvent);
@@ -56,8 +56,9 @@ const Form: React.FC = () => {
     } else {
       const updatedEvent = {
         ...data,
-        id: id, // or Date.now().toString()
+        id: editId,
       };
+
       updateEvent(updatedEvent);
       navigate("/");
     }
@@ -140,7 +141,7 @@ const Form: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-6 mb-6">
               <Button
-                label={`${id ? "Update" : "Add"} Event`}
+                label={`${editId ? "Update" : "Add"} Event`}
                 className="bg-purple-500"
                 type="submit"
               />
