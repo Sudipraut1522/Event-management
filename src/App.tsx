@@ -1,11 +1,12 @@
 import React from "react";
-import { Button } from "./components/ui/Button";
 import Navbar from "./components/Navbar";
+import Form from "./components/form/Form";
 
 const App = () => {
   return (
-    <div className=" ">
+    <div className="w-full ">
       <Navbar />
+      <Form />
     </div>
   );
 };

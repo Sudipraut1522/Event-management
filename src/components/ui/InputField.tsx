@@ -1,17 +1,17 @@
 import React from "react";
-import { UseFormRegister, FieldValues, FieldError } from "react-hook-form";
+import type { UseFormRegister } from "react-hook-form";
 
-type InputFieldProps<T extends FieldValues> = {
+type InputFieldProps = {
   label: string;
-  name: keyof T;
-  register: UseFormRegister<T>;
+  name: string;
+  register: UseFormRegister<any>;
   type?: string;
   placeholder?: string;
-  error?: FieldError;
+  error?: string | null | undefined;
   className?: string;
 };
 
-export const InputField = <T extends FieldValues>({
+export const InputField = ({
   label,
   name,
   register,
@@ -19,9 +19,9 @@ export const InputField = <T extends FieldValues>({
   placeholder = "",
   error,
   className = "",
-}: InputFieldProps<T>) => {
+}: InputFieldProps) => {
   return (
-    <div className={`mb-4 ${className}`}>
+    <div className={`mb-1 ${className}`}>
       <label
         htmlFor={String(name)}
         className="block text-sm font-medium text-gray-700 mb-1"
@@ -29,15 +29,15 @@ export const InputField = <T extends FieldValues>({
         {label}
       </label>
       <input
-        id={String(name)}
+        id={label}
         type={type}
         placeholder={placeholder}
-        {...register(name)}
+        {...(register ? register(name) : {})}
         className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
           error ? "border-red-500" : "border-gray-300"
         }`}
       />
-      {error && <p className="text-red-500 text-sm mt-1">{error?.message}</p>}
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };

@@ -7,8 +7,8 @@ const Navbar = () => {
     <div className="w-full sticky top-0 bg-gray-50">
       <nav className="flex justify-between py-4 px-8 items-center">
         <div className="flex gap-4 justify-center items-center ">
-          <p className="">
-            <Calendar size={30} />
+          <p className="bg-purple-200 p-2 rounded-md">
+            <Calendar size={25} />
           </p>
 
           <p>
@@ -18,9 +18,9 @@ const Navbar = () => {
             </p>
           </p>
         </div>
-        <div className="flex gap-4 items-center ">
-          <p>
-            <Logs size={30} />
+        <div className="flex gap-2 items-center ">
+          <p className="bg-purple-200 p-2 rounded-md">
+            <Logs size={25} />
           </p>
           <p className="font-semibold">View Event</p>
         </div>
