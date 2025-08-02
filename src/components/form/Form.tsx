@@ -10,6 +10,7 @@ import Textarea from "../ui/TextArea";
 import { SelectField } from "../ui/SelectField";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEventContext } from "../../Context/EventContext";
+import { toast } from "react-toastify";
 
 type FormValues = {
   title: string;
@@ -45,13 +46,28 @@ const Form: React.FC = () => {
   });
 
   const onSubmit = (data: FormValues) => {
+    const isConflict = events.some(
+      (event) =>
+        event.location === data.location &&
+        event.date === data.date &&
+        event.id !== editId // exclude current event
+    );
+
+    if (isConflict) {
+      toast.error(
+        "Another event is already scheduled at this location and date."
+      );
+      return; // stop submission
+    }
+
     if (!editId) {
       const newEvent = {
         ...data,
-        id: Date.now(), // use a number for id
+        id: Date.now(),
       };
 
       addEvent(newEvent);
+      toast.success("Event Added Successfully");
       navigate("/");
     } else {
       const updatedEvent = {
@@ -60,19 +76,21 @@ const Form: React.FC = () => {
       };
 
       updateEvent(updatedEvent);
+      toast.success("Event Updated Successfully");
       navigate("/");
     }
   };
 
   const handleCancelEvent = () => {
     reset();
-    navigate("/");
   };
   const options = [
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-    { label: "Cherry", value: "cherry" },
+    { label: "Meeting", value: "meeting" },
+    { label: "Conference", value: "Conference" },
+    { label: "WorkShop", value: "WorkShop" },
   ];
+
+  console.log(errors, "erroes");
   return (
     <div className="flex justify-center flex-col gap-2 items-center mt-6">
       <div className="min-w-[33vw] bg-white shadow-xl rounded-2xl ">
@@ -107,13 +125,14 @@ const Form: React.FC = () => {
                 error={errors?.location?.message}
               />
               <InputField
-                label="Date"
+                label="Date & Time"
                 name="date"
-                type="date"
+                type="datetime-local"
                 register={register}
-                placeholder="Select date"
+                placeholder="Select date and time"
                 error={errors?.date?.message}
               />
+
               <Controller
                 name="category"
                 control={control}
@@ -126,6 +145,7 @@ const Form: React.FC = () => {
                     onChange={field?.onChange}
                     onBlur={field?.onBlur}
                     options={options}
+                    error={errors?.category?.message}
                   />
                 )}
               />

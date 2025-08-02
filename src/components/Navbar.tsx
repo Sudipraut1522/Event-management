@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const Navbar = () => {
   return (
     <div className="w-full sticky top-0 bg-gray-50">
-      <nav className="flex justify-between py-4 md:px-12 items-center">
+      <nav className="flex justify-between px-2 py-4 md:px-12 items-center">
         <div className="flex gap-4 justify-center items-center ">
           <p className="bg-purple-200 p-2 rounded-md">
             <Calendar size={25} />
@@ -13,7 +13,7 @@ const Navbar = () => {
 
           <p>
             <p className="font-semibold">Event Manager</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 sm:block hidden">
               Organize and manage your events
             </p>
           </p>
