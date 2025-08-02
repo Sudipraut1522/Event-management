@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import EventList from "./components/EventList";
 
 const App = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("events");
+    if (stored) setEvents(JSON.parse(stored));
+  }, []);
+
+  const handleEdit = (event: any) => {
+    console.log("Edit", event);
+  };
+
+  const handleDelete = (id: number) => {
+    const updated = events.filter((e: any) => e.id !== id);
+    setEvents(updated);
+    localStorage.setItem("events", JSON.stringify(updated));
+  };
   return (
     <div className="w-full  ">
       <Navbar />
@@ -66,6 +83,13 @@ const App = () => {
             {/* Events Grid */}
           </div>
         </div>
+
+        <EventList
+          events={events || []}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          key={"hj"}
+        />
       </div>
     </div>
   );

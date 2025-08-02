@@ -38,11 +38,10 @@ const Form: React.FC = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form Submitted:", data);
-
     const existingEvents = JSON.parse(localStorage?.getItem("events") || "[]");
     const newEvent = {
       ...data,
+      id: new Date(),
     };
     const updatedEvents = [...existingEvents, newEvent];
     localStorage.setItem("events", JSON.stringify(updatedEvents));
