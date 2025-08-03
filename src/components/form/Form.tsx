@@ -1,7 +1,7 @@
 // src/components/form/Form.tsx
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Calendar } from "lucide-react";
+import { Calendar, Watch } from "lucide-react";
 import { InputField } from "../ui/InputField";
 import { Button } from "../ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,7 @@ const Form: React.FC = () => {
     handleSubmit,
     reset,
     control,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     mode: "onChange",
@@ -90,7 +91,17 @@ const Form: React.FC = () => {
     { label: "WorkShop", value: "WorkShop" },
   ];
 
-  console.log(errors, "erroes");
+  function getMinDateTime() {
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
+      now.getDate()
+    )}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
+  console.log(getMinDateTime());
+  console.log(watch("date"));
+
   return (
     <div className="flex justify-center flex-col gap-2 items-center mt-6">
       <div className="min-w-[33vw] bg-white shadow-xl rounded-2xl ">
@@ -131,6 +142,7 @@ const Form: React.FC = () => {
                 register={register}
                 placeholder="Select date and time"
                 error={errors?.date?.message}
+                min={getMinDateTime()} // ✅ sets the minimum allowed date/time to now
               />
 
               <Controller

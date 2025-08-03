@@ -19,6 +19,7 @@ export const InputField = ({
   placeholder = "",
   error,
   className = "",
+  ...rest
 }: InputFieldProps) => {
   return (
     <div className={`mb-1 ${className}`}>
@@ -36,6 +37,7 @@ export const InputField = ({
         className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
           error ? "border-red-500" : "border-gray-300"
         }`}
+        {...rest}
       />
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>

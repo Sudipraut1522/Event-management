@@ -1,5 +1,6 @@
 // src/context/EventContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export type Event = {
   id: number;
@@ -47,6 +48,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteEvent = (id: number) => {
     const updatedEvents = events.filter((event) => event.id !== id);
+    toast.success("Delete Successful");
     setEvents(updatedEvents);
     localStorage.setItem("events", JSON.stringify(updatedEvents));
   };

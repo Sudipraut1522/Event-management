@@ -48,15 +48,17 @@ const CalendarEventViewer = () => {
     return null;
   };
   return (
-    <div className="bg-gray-100 p-8 flex flex-col md:flex-row gap-8 items-start ">
+    <div className="bg-gray-100 md:px-16 flex flex-col md:flex-row gap-8 p-4  ">
       {/* Calendar */}
-      <div className="bg-white shadow rounded-lg p-4">
-        <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-          className="w-[80vw] md:w-96"
-          tileClassName={tileClassName}
-        />
+      <div className="overflow-x-auto px-4">
+        <div className="bg-white shadow rounded-lg p-4 w-full ">
+          <Calendar
+            onChange={setSelectedDate}
+            value={selectedDate}
+            tileClassName={tileClassName}
+            className="w-full"
+          />
+        </div>
       </div>
 
       {/* Events list */}
