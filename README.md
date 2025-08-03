@@ -1,3 +1,8 @@
+
+# Live Link of event managemnet app in netlify server
+Check out the live app here:  
+https://eb-event-management-app.netlify.app/
+
 # Event Calendar React App
 
 A React app featuring a calendar and event list with form inputs using React Hook Form and Tailwind CSS. It includes date/time inputs with restrictions, custom input components, and clean UI with icons from Lucide React.
