@@ -1,1 +1,6 @@
 @import "tailwindcss";
+.react-calendar__tile.highlight {
+  background-color: #a285c9 !important; /* Tailwind's bg-blue-500 */
+  color: white !important;
+  border-radius: 9999px;
+}

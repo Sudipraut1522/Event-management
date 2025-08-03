@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import EventList from "../components/EventList";
-import { useEffect, useState } from "react";
+
 import Dashboard from "../components/ui/EventDashboard/Dashboard";
+import CalendarEventViewer from "../components/ui/EventDashboard/EventList";
 
 const BaseLayout = () => {
   return (
@@ -11,6 +11,7 @@ const BaseLayout = () => {
         <Navbar />
         <div className="w-full ">
           <Outlet />
+          <CalendarEventViewer />
           <Dashboard />
         </div>
       </div>

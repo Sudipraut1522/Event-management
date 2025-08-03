@@ -4,7 +4,7 @@ import EventTable from "../EventTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash2, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import EventCard from "../../EventCard";
+import EventStatCards from "../../EventCard";
 
 const EventSummery = () => {
   const { events, deleteEvent } = useEventContext();
@@ -94,6 +94,7 @@ const EventSummery = () => {
     },
   ];
 
+  //category Option
   const categoryOption = [
     { value: "", label: "All Categories" },
     { value: "conference", label: "Conference" },
@@ -106,15 +107,8 @@ const EventSummery = () => {
     <div className="w-full">
       <div className="px-4 md:px-18">
         {/* Summary Boxes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          {events &&
-            events?.map((event, index) => {
-              return (
-                <div key={index}>
-                  <EventCard event={event} />
-                </div>
-              );
-            })}
+        <div className=" gap-6 mt-8">
+          <EventStatCards />
         </div>
 
         {/* Filters */}
@@ -131,7 +125,7 @@ const EventSummery = () => {
 
             {/* Category Filter */}
             <select
-              className="w-full md:w-[15%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-[15%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
@@ -146,7 +140,7 @@ const EventSummery = () => {
 
             {(searchTerm || categoryFilter) && (
               <>
-                <div className="bg-red-700  p-1 rounded-sm  px-2">
+                <div className="bg-red-700 py-2 p-1 rounded-sm  px-4">
                   <X
                     className="cursor-pointer text-white  "
                     onClick={() => {
