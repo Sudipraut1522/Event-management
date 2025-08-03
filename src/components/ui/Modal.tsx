@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import Modal from "react-modal";
 import { X } from "lucide-react"; // You can also use an SVG or other icon lib
 
 interface ModalProps {
   open: boolean;
   close: () => void;
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 const ReactModal: React.FC<ModalProps> = ({ open, close, children }) => {

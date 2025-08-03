@@ -3,7 +3,7 @@ import ReactModal from "../components/ui/Modal";
 import Form from "../components/form/Form";
 import { useNavigate } from "react-router-dom";
 
-const AddEvent = () => {
+const AddEvent: React.FC = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(true);
 

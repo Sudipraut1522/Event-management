@@ -1,7 +1,6 @@
-// src/components/form/Form.tsx
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Calendar, Watch } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { InputField } from "../ui/InputField";
 import { Button } from "../ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +17,7 @@ type FormValues = {
   venue: string;
   date: string;
   organizer: string;
+  category: string;
 };
 
 const Form: React.FC = () => {
@@ -31,7 +31,6 @@ const Form: React.FC = () => {
     handleSubmit,
     reset,
     control,
-    watch,
     formState: { errors },
   } = useForm<FormValues>({
     mode: "onChange",
@@ -39,7 +38,7 @@ const Form: React.FC = () => {
     defaultValues: {
       date: editId ? state.event?.date : "",
       description: editId ? state.event?.description : "",
-      venue: editId ? state.event?.Venue : "",
+      venue: editId ? state.event?.venue : "",
       organizer: editId ? state.event?.organizer : "",
       title: editId ? state.event?.title : "",
       category: editId ? state.event?.category : "",
@@ -50,9 +49,10 @@ const Form: React.FC = () => {
     const isConflict = events.some(
       (event) =>
         event?.venue === data.venue &&
-        event?.date === data.date &&
-        event?.id !== editId
+        event?.date.slice(0, 10) === data.date.slice(0, 10) &&
+        event?.id !== Number(editId)
     );
+    console.log(data.date.slice(0, 10), data.venue, "isConflict");
 
     if (isConflict) {
       toast.error(
@@ -73,7 +73,7 @@ const Form: React.FC = () => {
     } else {
       const updatedEvent = {
         ...data,
-        id: editId,
+        id: Number(editId),
       };
 
       updateEvent(updatedEvent);
@@ -99,8 +99,6 @@ const Form: React.FC = () => {
       now.getDate()
     )}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
   }
-  console.log(getMinDateTime());
-  console.log(watch("date"));
 
   return (
     <div className="flex justify-center flex-col gap-2 items-center mt-6">
@@ -142,14 +140,14 @@ const Form: React.FC = () => {
                 register={register}
                 placeholder="Select date and time"
                 error={errors?.date?.message}
-                min={getMinDateTime()} // ✅ sets the minimum allowed date/time to now
+                min={getMinDateTime()}
               />
 
               <Controller
                 name="category"
                 control={control}
                 rules={{ required: "Category is required" }}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <SelectField
                     label="Choose a Category"
                     name={field?.name}

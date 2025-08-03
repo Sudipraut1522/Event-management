@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useEventContext } from "../../../Context/EventContext";
-import { CalendarX2 } from "lucide-react";
+import { CalendarDays, CalendarX2, MapPin } from "lucide-react";
 
-const CalendarEventViewer = () => {
+const CalendarEventViewer: React.FC = () => {
   const { events } = useEventContext();
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -27,8 +27,10 @@ const CalendarEventViewer = () => {
     }
   });
 
+  console.log(selectedDate, "selectedDate");
+
   // Highlight tiles with events
-  const tileClassName = ({ date, view }) => {
+  const tileClassName = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
       const hasEvent = events?.some((event) => {
         const eventDate = new Date(event.date);
@@ -43,7 +45,7 @@ const CalendarEventViewer = () => {
         }
       });
 
-      if (hasEvent) return "highlight"; // our custom class
+      if (hasEvent) return "highlight"; //  custom class
     }
     return null;
   };
@@ -53,7 +55,7 @@ const CalendarEventViewer = () => {
       <div className="overflow-x-auto px-4">
         <div className="bg-white shadow rounded-lg p-4 w-full ">
           <Calendar
-            onChange={setSelectedDate}
+            onChange={(value) => setSelectedDate(value as Date)}
             value={selectedDate}
             tileClassName={tileClassName}
             className="w-full"
@@ -67,35 +69,56 @@ const CalendarEventViewer = () => {
           Events on {selectedDate?.toDateString()}
         </h2>
 
-        <div className="max-h-[35vh] overflow-y-auto mr-5">
-          {eventsForDate?.length > 0 ? (
-            eventsForDate.map((event, idx) => (
-              <div
-                key={idx}
-                className="bg-white shadow-lg rounded-2xl  p-4 mb-3 border-l-8 border-purple-400 transition hover:shadow-xl"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
-                    {event?.category || "General"}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {event?.venue || "Unknown Venue"}
-                  </span>
+        <div className="max-h-[35vh] overflow-y-auto  px-4">
+          <div className="">
+            {eventsForDate?.length > 0 ? (
+              eventsForDate?.map((event, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white shadow-lg rounded-2xl p-4 mb-3 border-l-8 border-purple-400 transition hover:shadow-xl"
+                >
+                  {/* Top metadata row */}
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
+                      {event?.category || "General"}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {event?.title || "Untitled Event"}
+                  </h3>
+
+                  {/* Event Meta with Icons */}
+                  <div className="flex flex-col gap-2 bg-gray-50 rounded-md p-3 mb-2">
+                    <div className="flex items-center text-sm text-gray-600 gap-2">
+                      <CalendarDays className="w-4 h-4 text-blue-500" />
+                      <span>
+                        {new Date(event.date).toLocaleString(undefined, {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600 gap-2">
+                      <MapPin className="w-4 h-4 text-green-500" />
+                      <span>{event?.venue || "Unknown Venue"}</span>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-700 text-sm">
+                    {event?.description || "No description available."}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {event?.title || "Untitled Event"}
-                </h3>
-                <p className="text-gray-700 text-sm">
-                  {event?.description || "No description available."}
-                </p>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
+                <CalendarX2 className="w-12 h-12 mb-4 text-blue-500" />
+                <p className="text-lg font-medium">No events for this date.</p>
               </div>
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
-              <CalendarX2 className="w-12 h-12 mb-4 text-blue-500" />
-              <p className="text-lg font-medium">No events for this date.</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BaseLayout from "../layout/Layout";
 import AddEvent from "../page/AddEvent";
 
-const RouteController = () => {
+const RouteController: React.FC = () => {
   return (
     <div>
       <BrowserRouter>

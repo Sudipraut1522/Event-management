@@ -3,7 +3,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 type Event = {
-  id: number;
+  id: number | string;
   title: string;
   date: string;
   location: string;
@@ -12,11 +12,9 @@ type Event = {
 
 interface EventListProps {
   events: Event[];
-  onEdit?: (event: Event) => void;
-  onDelete?: (id: number) => void;
 }
 
-const EventList: React.FC<EventListProps> = ({ events, onDelete }) => {
+const EventList: React.FC<EventListProps> = ({ events }) => {
   return (
     <div className="mt-6 space-y-4 w-full flex justify-center">
       {events?.length === 0 ? (
@@ -54,7 +52,6 @@ const EventList: React.FC<EventListProps> = ({ events, onDelete }) => {
                   </button>
                 </NavLink>
                 <button
-                  // onClick={() => onDelete(event?.id)}
                   className="p-2 rounded hover:bg-gray-100"
                   title="Delete"
                 >

@@ -17,7 +17,7 @@ type SelectFieldProps = {
   className?: string;
 };
 
-export const SelectField = ({
+export const SelectField: React.FC<SelectFieldProps> = ({
   label,
   name,
   value,
