@@ -62,7 +62,7 @@ const EventSummery = () => {
     },
     {
       header: "Venue",
-      accessorKey: "location",
+      accessorKey: "venue",
     },
     {
       header: "Category",
@@ -118,14 +118,14 @@ const EventSummery = () => {
             <input
               type="search"
               placeholder="Search by event title..."
-              className="w-full md:w-[80%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full hidden md:block md:w-[80%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
 
             {/* Category Filter */}
             <select
-              className="w-[15%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full md:w-[20%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
@@ -138,24 +138,25 @@ const EventSummery = () => {
               })}
             </select>
 
-            {(searchTerm || categoryFilter) && (
-              <>
-                <div className="bg-red-700 py-2 p-1 rounded-sm  px-4">
-                  <X
-                    className="cursor-pointer text-white  "
-                    onClick={() => {
-                      setSearchTerm("");
-                      setCategoryFilter("");
-                    }}
-                  />
-                </div>
-              </>
-            )}
+            <>
+              <div className="bg-red-700 py-2 p-1 rounded-sm  px-4">
+                <X
+                  className="cursor-pointer text-white  "
+                  onClick={() => {
+                    setSearchTerm("");
+                    setCategoryFilter("");
+                  }}
+                />
+              </div>
+            </>
           </div>
         </div>
 
         {/* Filtered Event List */}
-        <EventTable columns={Columns || []} data={filteredEvents} />
+
+        <div className="min-h-[50vh]">
+          <EventTable columns={Columns || []} data={filteredEvents} />
+        </div>
       </div>
     </div>
   );

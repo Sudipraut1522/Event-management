@@ -48,51 +48,55 @@ const CalendarEventViewer = () => {
     return null;
   };
   return (
-    <div className="bg-gray-100 p-8 flex flex-col md:flex-row gap-8 items-start ">
+    <div className="bg-gray-100 md:px-16 flex flex-col md:flex-row gap-8 p-4  ">
       {/* Calendar */}
-      <div className="bg-white shadow rounded-lg p-4">
-        <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-          className="w-[80vw] md:w-96"
-          tileClassName={tileClassName}
-        />
+      <div className="overflow-x-auto px-4">
+        <div className="bg-white shadow rounded-lg p-4 w-full ">
+          <Calendar
+            onChange={setSelectedDate}
+            value={selectedDate}
+            tileClassName={tileClassName}
+            className="w-full"
+          />
+        </div>
       </div>
 
       {/* Events list */}
-      <div className="flex-1 w-full md:max-w-[500px]">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">
+      <div className="flex-1 w-full md:max-w-[500px] ">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800 mr-6">
           Events on {selectedDate?.toDateString()}
         </h2>
 
-        {eventsForDate?.length > 0 ? (
-          eventsForDate.map((event, idx) => (
-            <div
-              key={idx}
-              className="bg-white shadow-lg rounded-2xl p-4 mb-3 border-l-8 border-purple-400 transition hover:shadow-xl"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
-                  {event?.category || "General"}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {event?.location || "Unknown Venue"}
-                </span>
+        <div className="max-h-[35vh] overflow-y-auto mr-5">
+          {eventsForDate?.length > 0 ? (
+            eventsForDate.map((event, idx) => (
+              <div
+                key={idx}
+                className="bg-white shadow-lg rounded-2xl  p-4 mb-3 border-l-8 border-purple-400 transition hover:shadow-xl"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
+                    {event?.category || "General"}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {event?.venue || "Unknown Venue"}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {event?.title || "Untitled Event"}
+                </h3>
+                <p className="text-gray-700 text-sm">
+                  {event?.description || "No description available."}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {event?.title || "Untitled Event"}
-              </h3>
-              <p className="text-gray-700 text-sm">
-                {event?.description || "No description available."}
-              </p>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
+              <CalendarX2 className="w-12 h-12 mb-4 text-blue-500" />
+              <p className="text-lg font-medium">No events for this date.</p>
             </div>
-          ))
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
-            <CalendarX2 className="w-12 h-12 mb-4 text-blue-500" />
-            <p className="text-lg font-medium">No events for this date.</p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
