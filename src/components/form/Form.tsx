@@ -105,7 +105,9 @@ const Form: React.FC = () => {
       <div className="min-w-[33vw] bg-white shadow-xl rounded-2xl ">
         <div className="flex justify-center gap-2 bg-purple-500 py-4 rounded-md">
           <Calendar className="text-white" />
-          <h1 className="text-lg font-semibold text-white">Create New Event</h1>
+          <h1 className="text-lg font-semibold text-white">
+            {editId ? "Update " : "Create"}Event
+          </h1>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
