@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEventContext } from "../../../Context/EventContext";
 import EventTable from "../EventTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash2, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import EventStatCards from "../../EventCard";
-
+export type Event = {
+  id: number;
+  title: string;
+  description: string;
+  venue: string;
+  date: string;
+  organizer: string;
+  category?: string;
+};
 const EventSummery = () => {
   const { events, deleteEvent } = useEventContext();
   const [searchTerm, setSearchTerm] = useState("");
@@ -131,7 +139,7 @@ const EventSummery = () => {
             >
               {categoryOption?.map((category, index) => {
                 return (
-                  <option id={index} value={category?.value}>
+                  <option id={index.toString()} value={category?.value}>
                     {category?.label}
                   </option>
                 );
@@ -139,14 +147,14 @@ const EventSummery = () => {
             </select>
 
             <>
-              <div className="bg-red-700 py-2 p-1 rounded-sm  px-4">
-                <X
-                  className="cursor-pointer text-white  "
-                  onClick={() => {
-                    setSearchTerm("");
-                    setCategoryFilter("");
-                  }}
-                />
+              <div
+                className="bg-red-700 py-2 p-1 rounded-sm  px-4"
+                onClick={() => {
+                  setSearchTerm("");
+                  setCategoryFilter("");
+                }}
+              >
+                <X className="cursor-pointer text-white  " />
               </div>
             </>
           </div>
@@ -154,7 +162,7 @@ const EventSummery = () => {
 
         {/* Filtered Event List */}
 
-        <div className="min-h-[50vh]">
+        <div className="min-h-[50vh] pb-10">
           <EventTable columns={Columns || []} data={filteredEvents} />
         </div>
       </div>

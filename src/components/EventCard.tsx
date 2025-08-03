@@ -2,7 +2,7 @@ import React from "react";
 import { Clock, CalendarCheck, CalendarClock } from "lucide-react";
 import { useEventContext } from "../Context/EventContext";
 
-const EventStatCards = () => {
+const EventStatCards: React.FC = () => {
   const { events } = useEventContext();
 
   // Helper to compare dates without time

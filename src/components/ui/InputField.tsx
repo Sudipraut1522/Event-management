@@ -9,9 +9,9 @@ type InputFieldProps = {
   placeholder?: string;
   error?: string | null | undefined;
   className?: string;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
-export const InputField = ({
+export const InputField: React.FC<InputFieldProps> = ({
   label,
   name,
   register,

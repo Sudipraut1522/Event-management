@@ -1,7 +1,7 @@
 import React from "react";
 import EventSummery from "./EventSummery";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   return (
     <div>
       <EventSummery />

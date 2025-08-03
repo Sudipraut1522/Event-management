@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Calendar, Plus } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   return (
     <div className="w-full sticky top-0 bg-gray-50">
       <nav className="flex justify-between px-2 py-4 md:px-12 items-center">

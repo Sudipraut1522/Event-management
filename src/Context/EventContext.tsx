@@ -1,12 +1,12 @@
 // src/context/EventContext.tsx
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 export type Event = {
   id: number;
   title: string;
   description: string;
-  location: string;
+  venue: string;
   date: string;
   organizer: string;
   category?: string;
