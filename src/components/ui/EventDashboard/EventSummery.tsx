@@ -62,7 +62,7 @@ const EventSummery = () => {
     },
     {
       header: "Venue",
-      accessorKey: "location",
+      accessorKey: "venue",
     },
     {
       header: "Category",
@@ -153,7 +153,10 @@ const EventSummery = () => {
         </div>
 
         {/* Filtered Event List */}
-        <EventTable columns={Columns || []} data={filteredEvents} />
+
+        <div className="min-h-[50vh]">
+          <EventTable columns={Columns || []} data={filteredEvents} />
+        </div>
       </div>
     </div>
   );

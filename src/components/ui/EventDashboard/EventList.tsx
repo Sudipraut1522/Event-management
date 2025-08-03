@@ -62,39 +62,41 @@ const CalendarEventViewer = () => {
       </div>
 
       {/* Events list */}
-      <div className="flex-1 w-full md:max-w-[500px]">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">
+      <div className="flex-1 w-full md:max-w-[500px] ">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800 mr-6">
           Events on {selectedDate?.toDateString()}
         </h2>
 
-        {eventsForDate?.length > 0 ? (
-          eventsForDate.map((event, idx) => (
-            <div
-              key={idx}
-              className="bg-white shadow-lg rounded-2xl p-4 mb-3 border-l-8 border-purple-400 transition hover:shadow-xl"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
-                  {event?.category || "General"}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {event?.location || "Unknown Venue"}
-                </span>
+        <div className="max-h-[35vh] overflow-y-auto mr-5">
+          {eventsForDate?.length > 0 ? (
+            eventsForDate.map((event, idx) => (
+              <div
+                key={idx}
+                className="bg-white shadow-lg rounded-2xl  p-4 mb-3 border-l-8 border-purple-400 transition hover:shadow-xl"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
+                    {event?.category || "General"}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {event?.venue || "Unknown Venue"}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {event?.title || "Untitled Event"}
+                </h3>
+                <p className="text-gray-700 text-sm">
+                  {event?.description || "No description available."}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {event?.title || "Untitled Event"}
-              </h3>
-              <p className="text-gray-700 text-sm">
-                {event?.description || "No description available."}
-              </p>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
+              <CalendarX2 className="w-12 h-12 mb-4 text-blue-500" />
+              <p className="text-lg font-medium">No events for this date.</p>
             </div>
-          ))
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
-            <CalendarX2 className="w-12 h-12 mb-4 text-blue-500" />
-            <p className="text-lg font-medium">No events for this date.</p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
