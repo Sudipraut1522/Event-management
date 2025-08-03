@@ -10,6 +10,7 @@ import Textarea from "../ui/TextArea";
 import { SelectField } from "../ui/SelectField";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEventContext } from "../../Context/EventContext";
+import { toast } from "react-toastify";
 
 type FormValues = {
   title: string;
@@ -20,7 +21,7 @@ type FormValues = {
 };
 
 const Form: React.FC = () => {
-  const { id } = useParams();
+  const { id: editId } = useParams();
   const { state } = useLocation();
   const { addEvent, events, updateEvent } = useEventContext();
 
@@ -35,43 +36,61 @@ const Form: React.FC = () => {
     mode: "onChange",
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      date: id ? state.event?.date : "",
-      description: id ? state.event?.description : "",
-      location: id ? state.event?.location : "",
-      organizer: id ? state.event?.organizer : "",
-      title: id ? state.event?.title : "",
-      category: id ? state.event?.category : "",
+      date: editId ? state.event?.date : "",
+      description: editId ? state.event?.description : "",
+      location: editId ? state.event?.location : "",
+      organizer: editId ? state.event?.organizer : "",
+      title: editId ? state.event?.title : "",
+      category: editId ? state.event?.category : "",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    if (!id) {
+    const isConflict = events.some(
+      (event) =>
+        event.location === data.location &&
+        event.date === data.date &&
+        event.id !== editId // exclude current event
+    );
+
+    if (isConflict) {
+      toast.error(
+        "Another event is already scheduled at this location and date."
+      );
+      return; // stop submission
+    }
+
+    if (!editId) {
       const newEvent = {
         ...data,
-        id: crypto.randomUUID(), // or Date.now().toString()
+        id: Date.now(),
       };
 
       addEvent(newEvent);
+      toast.success("Event Added Successfully");
       navigate("/");
     } else {
       const updatedEvent = {
         ...data,
-        id: id, // or Date.now().toString()
+        id: editId,
       };
+
       updateEvent(updatedEvent);
+      toast.success("Event Updated Successfully");
       navigate("/");
     }
   };
 
   const handleCancelEvent = () => {
     reset();
-    navigate("/");
   };
   const options = [
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-    { label: "Cherry", value: "cherry" },
+    { label: "Meeting", value: "meeting" },
+    { label: "Conference", value: "Conference" },
+    { label: "WorkShop", value: "WorkShop" },
   ];
+
+  console.log(errors, "erroes");
   return (
     <div className="flex justify-center flex-col gap-2 items-center mt-6">
       <div className="min-w-[33vw] bg-white shadow-xl rounded-2xl ">
@@ -106,13 +125,14 @@ const Form: React.FC = () => {
                 error={errors?.location?.message}
               />
               <InputField
-                label="Date"
+                label="Date & Time"
                 name="date"
-                type="date"
+                type="datetime-local"
                 register={register}
-                placeholder="Select date"
+                placeholder="Select date and time"
                 error={errors?.date?.message}
               />
+
               <Controller
                 name="category"
                 control={control}
@@ -125,6 +145,7 @@ const Form: React.FC = () => {
                     onChange={field?.onChange}
                     onBlur={field?.onBlur}
                     options={options}
+                    error={errors?.category?.message}
                   />
                 )}
               />
@@ -140,7 +161,7 @@ const Form: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-6 mb-6">
               <Button
-                label={`${id ? "Update" : "Add"} Event`}
+                label={`${editId ? "Update" : "Add"} Event`}
                 className="bg-purple-500"
                 type="submit"
               />

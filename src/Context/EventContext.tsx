@@ -23,30 +23,32 @@ const EventContext = createContext<EventContextType | undefined>(undefined);
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const stored = localStorage.getItem("events");
+  const [events, setEvents] = useState<Event[]>(
+    stored ? JSON.parse(stored) : []
+  );
 
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("events") || "[]");
-    setEvents(stored);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("events", JSON.stringify(events));
-  }, [events]);
-
-  const addEvent = (event: Omit<Event, "id">) => {
+  // Add a new event
+  const addEvent = (event: Event) => {
     const newEvent: Event = { ...event, id: Date.now() };
-    setEvents((prev) => [...prev, newEvent]);
+    const updatedEvents = [...events, newEvent];
+    setEvents(updatedEvents);
+    localStorage.setItem("events", JSON.stringify(updatedEvents));
   };
 
   const updateEvent = (updated: Event) => {
-    setEvents((prev) =>
-      prev.map((event) => (event.id === updated.id ? updated : event))
+    const updatedEvents = events.map((event) =>
+      Number(event?.id) === Number(updated?.id) ? updated : event
     );
+
+    setEvents(updatedEvents);
+    localStorage.setItem("events", JSON.stringify(updatedEvents));
   };
 
   const deleteEvent = (id: number) => {
-    setEvents((prev) => prev.filter((event) => event.id !== id));
+    const updatedEvents = events.filter((event) => event.id !== id);
+    setEvents(updatedEvents);
+    localStorage.setItem("events", JSON.stringify(updatedEvents));
   };
 
   return (
