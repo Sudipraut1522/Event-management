@@ -1,4 +1,3 @@
-// src/context/EventContext.tsx
 import React, { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
